@@ -61,6 +61,8 @@ cpdefine("inline:com-chilipeppr-workspace-kyjak", ["chilipeppr_ready"], function
          */
         init: function() {
 
+            this.loadGcodePanel();
+            
             // Most workspaces will instantiate the Serial Port JSON Server widget
             this.loadSpjsWidget();
             // Most workspaces will instantiate the Serial Port Console widget
@@ -227,5 +229,30 @@ cpdefine("inline:com-chilipeppr-workspace-kyjak", ["chilipeppr_ready"], function
                 }
             );
         },
+        /**
+         * Load the gcode panel
+         * our pubsubviewer widget that makes those links for us.
+         */
+        loadGcodePanel: function(callback) {
+            // Workspace Menu with Workspace Billboard
+            var that = this;
+               chilipeppr.load(
+              "#gcode-instance",
+              "http://raw.githubusercontent.com/chilipeppr/widget-gcodelist/master/auto-generated-widget.html",
+              function() {
+                // Callback after widget loaded into #myDivWidgetGcode
+                // Now use require.js to get reference to instantiated widget
+                cprequire(
+                  ["inline:com-chilipeppr-widget-gcode"], // the id you gave your widget
+                  function(myObjWidgetGcode) {
+                    // Callback that is passed reference to the newly loaded widget
+                    console.log("Widget / Gcode v8 just got loaded.", myObjWidgetGcode);
+                    myObjWidgetGcode.init();
+                  }
+                );
+              }
+            );
+        }
+
     }
 });
